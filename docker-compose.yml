@@ -1,0 +1,40 @@
+version: '2'
+services:
+  java-server:
+    build: ./library-server-java
+    ports:
+      - "9080:9080"
+    env_file:
+      - db-variables.env
+#    depends_on:
+#      - cloudant
+    links:
+      - cloudant
+    network_mode: bridge
+  node-ui:
+    build: ./Libraryui
+    ports:
+      - "8080:8080"
+    env_file:
+      - node-variables.env
+    links:
+      - java-server
+    network_mode: bridge
+#    links:
+#      - "java-server:server1"
+#    environment:
+#      - LIBRARY_URI=java-server+/api
+  cloudant:
+      image: ibmcom/cloudant-developer
+      container_name: cloudant-developer
+      hostname: cloudant
+      ports:
+        - "3000:80"
+      expose:
+        - "80"
+      volumes:
+        - cloudant:/srv
+      privileged: true
+      network_mode: bridge
+volumes:
+  cloudant:
