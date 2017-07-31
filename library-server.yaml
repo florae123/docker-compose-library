@@ -4,7 +4,6 @@ metadata:
   labels:
     run: library-server
   name: library-server
-  #resourceVersion: "78830"
 spec:
   ports:
   - nodePort: 30190
@@ -32,8 +31,15 @@ spec:
         run: library-server
     spec:
       containers:
-      - image: library-server:v3
+      - image: library-server:v1
         name: library-server
+        env:
+          - name: CLOUDANT_DEVELOPER
+            value: "1"
+          - name: password
+            value: 34cd6201661e9bd02a10bc048a51ea68d9e25d1a16fea1a88ba14d5f6ef0183c
+          - name: username
+            value: f1054f74-38f7-4654-b982-1af0b9b1c717-bluemix
         ports:
         - containerPort: 9080
           protocol: TCP

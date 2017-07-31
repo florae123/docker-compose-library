@@ -50,12 +50,12 @@ if(process.env.inContainer=="1"){
   CLIENT_ID = process.env.CLIENT_ID;
   SECRET = process.env.SECRET;
   OAUTH_SERVER_URL=process.env.OAUTH_SERVER_URL;
-  if(!process.env.KUBERNETES_PORT){
-    APP_URL=process.env.APP_URL
-  } else { //in minikube, kubernetes
+  //if(!process.env.KUBERNETES_PORT){
+    APP_URL=process.env.APP_URL;
+  /*} else { //in minikube, kubernetes
     APP_URL='http://192.168.99.101:30832'
     console.log("APP_URL: "+APP_URL);
-  }
+  }*/
 }
 //if running locally
 else if (!process.env.VCAP_SERVICES) {
@@ -188,16 +188,16 @@ app.listen(process.env.PORT || 8080);
 console.log("Listening on port ", (process.env.PORT || 8080 ));
 
 //kubernetes
-if (process.env.LIBRARY_SERVER_SERVICE_HOST!=undefined) {
+/*if (process.env.LIBRARY_SERVER_SERVICE_HOST!=undefined) {
   var javaHost = process.env.LIBRARY_SERVER_SERVICE_HOST;
   var javaPort = process.env.LIBRARY_SERVER_SERVICE_PORT;
   //this doesn't work in browser
   //var libraryURI = javaHost+':'+javaPort+'/library-server-java/api';
   var libraryURI = 'http://192.168.99.101:30190/library-server-java/api';
   console.log("The Library URI is: "+libraryURI);
-}
+}*/
 //docker compose
-else if (process.env.JAVA_SERVER_1_PORT_9080_TCP_ADDR!=undefined){
+/*else*/ if (process.env.JAVA_SERVER_1_PORT_9080_TCP_ADDR!=undefined){
   var libraryURI = 'http://'+process.env.JAVA_SERVER_1_PORT_9080_TCP_ADDR+':9080/library-server-java/api';
   console.log("The Library URI is: " + libraryURI);
 } else {

@@ -32,11 +32,36 @@ spec:
         run: library-ui
     spec:
       containers:
-      - image: library-ui:v3
+      - image: library-ui:v2
         name: library-ui
         ports:
         - containerPort: 8080
           protocol: TCP
+        env:
+        - name: LIBRARY_URI
+          value: http://192.168.99.101:30190/library-server-java/api
+        - name: APP_URL
+          value: http://192.168.99.101:30832 #port like service nodeport  #http://localhost:8080
+        - name: CLIENT_ID
+          value: 68ada283-cea7-470d-ab8c-21571d080eeb
+        - name: CONVERSATION_PASSWORD
+          value: 7F7MvTfwPuTt
+        - name: CONVERSATION_USERNAME
+          value: 1e642087-a24b-4277-b021-0ff372845a5e
+        - name: OAUTH_SERVER_URL
+          value: https://appid-oauth.ng.bluemix.net/oauth/v3/21800a63-541d-47dd-8774-34f0d6c063f3
+        - name: SECRET
+          value: ODg3YjcyNzAtYTgxMy00M2MwLTgyZDEtM2UxNGY1ODBhYWZj
+        - name: TENANT_ID
+          value: 21800a63-541d-47dd-8774-34f0d6c063f3
+        - name: conv_workspaceid
+          value: 4e3c0199-9871-4346-8b30-c2bfba973f8c
+        - name: inContainer
+          value: "1" # should be set to "1"
+        - name: tts_password
+          value: JqtrtmFEqG26
+        - name: tts_username
+          value: aa348980-c0d8-4c7a-87ae-ac2c77fb9d25
         resources: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
