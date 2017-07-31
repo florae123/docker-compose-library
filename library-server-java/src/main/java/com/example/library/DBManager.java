@@ -81,6 +81,9 @@ public class DBManager {
 			}
 			System.out.println("cloudantdeveloper: "+cloudantdeveloper);
 			System.out.println("cloudantdeveloper is null: "+(cloudantdeveloper==null));
+			String kubernetes_cloudant_host = "";
+			kubernetes_cloudant_host=System.getenv("CLOUDANT_DEVELOPER_SERVICE_HOST");
+			System.out.println("cloudant-test-serivce-host: "+kubernetes_cloudant_host);
 			if(cloudantdeveloper==null || !cloudantdeveloper.equals("1")) {
 				//System.out.println("Cloudant developer: "+System.getenv("CLOUDANT_DEVELOPER"));
 				//System.out.println(System.getenv("CLOUDANT_DEVELOPER").equals("1"));
@@ -91,13 +94,23 @@ public class DBManager {
 						.build();
 				return client;
 			} else {
-				System.out.println("Connecting to Cloudant : " + "admin");
-				System.out.println("Using other url http://admin:pass@cloudant instead of url ibm/com/cloudant-developer://cloudant");
-				CloudantClient client = ClientBuilder.url(new URL("http://admin:pass@cloudant"))
-					 .username("admin")
-					 .password("pass") //default values
-					 .build();
-				return client;
+				if(kubernetes_cloudant_host==null) {
+					System.out.println("Connecting to Cloudant : " + "admin");
+					System.out.println("Using other url http://admin:pass@cloudant instead of url ibm/com/cloudant-developer://cloudant");
+					CloudantClient client = ClientBuilder.url(new URL("http://admin:pass@cloudant"))
+						 .username("admin")
+						 .password("pass") //default values
+						 .build();
+					return client;
+				} else {
+					System.out.println("Connecting to Cloudant : " + "admin");
+					System.out.println("Using other url http://admin:pass@kubernetes_cloudant_host");
+					CloudantClient client = ClientBuilder.url(new URL("http://admin:pass@"+kubernetes_cloudant_host+":"+System.getenv("CLOUDANT_DEVELOPER_SERVICE_PORT")))
+						 .username("admin")
+						 .password("pass") //default values
+						 .build();
+					return client;
+				}
 			}
 		//} catch (CouchDbException e) {
 		} catch (Exception e){
