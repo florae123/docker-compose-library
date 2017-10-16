@@ -43,7 +43,7 @@ For more information about the application see: [https://github.com/florae123/Li
 
 2. If you are using Docker Quickstart Terminal on Windows, execute this command:
     ```
-    $ env $(minikube docker-env)
+    $ eval $(minikube docker-env)
     ```
 
 3. Make sure kubectl interacts with the Minikube cluster.
