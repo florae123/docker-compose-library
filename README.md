@@ -36,23 +36,23 @@ For more information about the application see: [https://github.com/florae123/Li
 
 ## Deploy on Minikube
 
-1. If you are using Docker Quickstart Terminal on Windows, execute this command:
+1. Start Minikube if necessary:
+    ```
+    minikube start
+    ```
+
+2. If you are using Docker Quickstart Terminal on Windows, execute this command:
     ```
     $ env $(minikube docker-env)
     ```
 
-2. Make sure kubectl interacts with the Minikube cluster.
+3. Make sure kubectl interacts with the Minikube cluster.
     ```
     kubectl config use-context minikube
     ```
     Verify that kubectl is configured to communicate with your cluster:
     ```
     kubectl cluster-info
-    ```
-
-3. Start Minikube if necessary:
-    ```
-    minikube start
     ```
 
 4. Navigate into the repository "docker-compose-library" and build the necessary Docker Images:
