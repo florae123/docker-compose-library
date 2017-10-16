@@ -74,7 +74,7 @@ function showUserRentals() {
     							'<div class="form-group">'+
     								'<button type="button" class="btn btn-default" id="updateRentalbtn">Update</button>'+
     								'&nbsp; <button type="button" class="btn btn-default updateNot">'+
-    								'Cancel</button>'
+    								'Cancel</button>'+
     							'</div>'+
     						'</form>'+
     						'</div>';
