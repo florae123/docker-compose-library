@@ -91,7 +91,7 @@ For more information about the application see: [https://github.com/florae123/Li
 
 7. Check for the external IP address that minikube uses to expose services. Copy the IP address to the values of the environment variables **LIBRARY_URI** and **APP_URL**. Keep the ports *30190* and *30832*, respectively, and the rest of the URLs.
 
-8. Create a deployment and a service for the to microservices.
+8. Create a deployment and a service for the two microservices.
     First, deploy and expose the library-server app.
     ```
     kubectl create -f library-server.yaml
