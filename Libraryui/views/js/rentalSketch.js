@@ -1,12 +1,12 @@
 
 function executeRental(){
 
-  var rootURLrental = rootURL1 + "/rentals";
+  //var rootURLrental = rootURL1 + "/rentals";
   /*var rootURLuserrentals = rootURLrental + "/user/" + userEmail;
   console.log("user url: "+rootURLuserrentals);*/
-  var rootURLbooks = rootURL1 +"/books";
-  console.log(rootURL1);
-  console.log(rootURLrental);
+  //var rootURLbooks = rootURL1 +"/books";
+  //console.log(rootURL1);
+  //console.log(rootURLrental);
 
 $(document).ready(function() {
   showUserRentals();
@@ -19,15 +19,19 @@ $(document).on("click", ".rentalsTableToggle", function(){
 function showUserRentals() {
   $('#rentalsTableRows').empty();
   $.ajax({
-			url: rootURLrental+'/user/'+userCustomerId
+			//url: rootURLrental+'/user/'+userCustomerId
+      url: nodejsurl+'/rentals/user/'+userCustomerId
 	}).then(function(data) {
+    console.log(data);
     var book;
-		$.each( data, function( key, val ) {
+		$.each( JSON.parse(data), function( key, val ) { //JSON.parse added
       $.ajax({
         type: 'GET',
-        url: rootURLbooks+"/"+val.bookuri,
+        //url: rootURLbooks+"/"+val.bookuri,
+        url: nodejsurl+"/books/"+val.bookuri,
         success: function(data, textStatus, jqXHR){
-          book = data;
+          //book = data;
+          book = JSON.parse(data);
           var auth = "No authors found.";
     			if(book.hasOwnProperty('authors')){
     				auth = book.authors;
@@ -123,7 +127,8 @@ function returnBookFromList(valueID, element, parent){
 	console.log('returnBook');
 	$.ajax({
 		type: 'DELETE',
-		url: rootURLrental + '/' + valueID,
+		//url: rootURLrental + '/' + valueID,
+    url: nodejsurl+'/rentals/'+valueID,
 		success: function(data, textStatus, jqXHR){
 			//close popover
 			var parent1 = element.parentElement;
@@ -174,7 +179,8 @@ function updateRental(valueID, element) {
   $.ajax({
     type: 'PUT',
     contentType: 'application/json',
-    url: rootURLrental +'/'+valueID,
+    //url: rootURLrental +'/'+valueID,
+    url: nodejsurl +'/rentals/'+valueID,
     dataType: 'json',
     data: formToJSONRentalUpdate(valueID),
     success: function(data, textStatus, jqXHR){
@@ -235,7 +241,8 @@ function addRental() {
 	$.ajax({
 		type: 'POST',
 		contentType: 'application/json',
-		url: rootURLrental,
+		//url: rootURLrental,
+    url: nodejsurl+'/rentals',
 		//dataType: "json",
 		data: formToJSONRental(),
 		success: function(data, textStatus, jqXHR){
@@ -292,7 +299,8 @@ function deleteAllRents(){
 	console.log('deleteAll');
 	$.ajax({
 		type: 'DELETE',
-		url: rootURLrental+'/user/'+userCustomerId,
+		//url: rootURLrental+'/user/'+userCustomerId,
+    url: nodejsurl+'/rentals/user/'+userCustomerId,
 		success: function(data, textStatur, jqXHR){
 			//location.reload();
 			showUserRentals();
@@ -327,7 +335,8 @@ function addRentalConv(bookid, custid, startDate, endDate) {
   $.ajax({
     type: 'POST',
     contentType: 'application/json',
-    url: rootURL1 + "/rentals",
+    //url: rootURL1 + "/rentals",
+    url: nodejsurl + "/rentals",
     //dataType: "json",
     data: formToJSONRentalConv(bookid, startDate, endDate),
     success: function(data, textStatus, jqXHR){

@@ -25,7 +25,7 @@
 
 
 function user(){
-  var rootURLuser = rootURL1 + "/customers/user/" + userEmail;
+  //var rootURLuser = rootURL1 + "/customers/user/" + userEmail;
   var userCustomer;
   $(document).ready(function() {
   	checkUser();
@@ -33,15 +33,21 @@ function user(){
 
   function checkUser(){
     $.ajax({
-      url: rootURL1 + "/customers/user/" + userEmail,
+      //url: rootURL1 + "/customers/user/" + userEmail,
+      url: nodejsurl+'/customers/user/'+userEmail,
       type: 'GET',
       success: function(data){
         console.log('email search data: ' + data);
+        data = JSON.parse(data);
         if(data.length === 0){
           addUserAsCustomer();
         } else {
           userCustomer = data[0];
+          //console.log('data: '+data+ ' data[0]: '+ JSON.parse(data)[0]);
           userCustomerId = userCustomer.id;
+          //userCustomerId1 = JSON.parse(data)[0].id;
+          //console.log(userCustomerId + ' or '+ userCustomerId1);
+          console.log(userCustomerId);
           showUserData(userCustomer);
         }
       },
@@ -58,7 +64,8 @@ function user(){
   	$.ajax({
   		type: 'POST',
   		contentType: 'application/json',
-  		url: rootURL1 + "/customers",
+  		//url: rootURL1 + "/customers",
+      url: nodejsurl+'/customers',
   		data: formToJSONUserCustomer(),
   		success: function(data, textStatus, jqXHR){
   			checkUser();

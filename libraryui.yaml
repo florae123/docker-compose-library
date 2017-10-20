@@ -15,8 +15,12 @@ spec:
     run: library-ui
   sessionAffinity: None
   type: LoadBalancer
+#status:
+  #loadBalancer: {}
 status:
-  loadBalancer: {}
+  loadBalancer:
+    ingress:
+    - ip: 146.148.47.155
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -32,36 +36,39 @@ spec:
         run: library-ui
     spec:
       containers:
-      - image: library-ui:v2
+      - image: registry.eu-de.bluemix.net/feggers/library-ui:v1
+        #image: library-ui:v1
         name: library-ui
         ports:
         - containerPort: 8080
           protocol: TCP
         env:
-        - name: LIBRARY_URI
-          value: http://192.168.99.101:30190/library-server-java/api
+        #- name: LIBRARY_URI
+        #  value: http://192.168.99.101:30190/library-server-java/api
         - name: APP_URL
-          value: http://192.168.99.101:30832 #port like service nodeport  #http://localhost:8080
+        #make sure protocol in server.js (l.194) for library-server Service is adjusted (http or https)
+          #value: http://192.168.99.101:30832 #port like service nodeport  #http://localhost:8080
+          value: http://159.122.69.136:30832
         - name: CLIENT_ID
-          value: 68ada283-cea7-470d-ab8c-21571d080eeb
+          value: a97ad597-4243-4751-9eb8-6e01349d7129
         - name: CONVERSATION_PASSWORD
-          value: 7F7MvTfwPuTt
+          value: wxBQBlyqhSds
         - name: CONVERSATION_USERNAME
-          value: 1e642087-a24b-4277-b021-0ff372845a5e
+          value: b1f2a49b-eea7-44c3-ac02-aaa2c7a72cf4
         - name: OAUTH_SERVER_URL
-          value: https://appid-oauth.ng.bluemix.net/oauth/v3/21800a63-541d-47dd-8774-34f0d6c063f3
+          value: https://appid-oauth.eu-gb.bluemix.net/oauth/v3/e6d2f573-5890-45aa-b82c-dcbb217e6abe
         - name: SECRET
-          value: ODg3YjcyNzAtYTgxMy00M2MwLTgyZDEtM2UxNGY1ODBhYWZj
+          value: Yjk3MGUzZTktZDcwOS00MmVmLTg2ZTQtNzQ0MjlmOGI2ODYw
         - name: TENANT_ID
-          value: 21800a63-541d-47dd-8774-34f0d6c063f3
+          value: e6d2f573-5890-45aa-b82c-dcbb217e6abe
         - name: conv_workspaceid
-          value: 4e3c0199-9871-4346-8b30-c2bfba973f8c
+          value: 1ec4b7df-07d8-4fca-9e79-909409b6d718
         - name: inContainer
           value: "1" # should be set to "1"
         - name: tts_password
-          value: JqtrtmFEqG26
+          value: GdyGnvvfiWoz
         - name: tts_username
-          value: aa348980-c0d8-4c7a-87ae-ac2c77fb9d25
+          value: 7907de85-3ca4-42c7-9988-1f0cd28a653a
         resources: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Always

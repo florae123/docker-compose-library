@@ -1,8 +1,8 @@
 
 function execute(){
 
-var rootURLbooks = rootURL1 + "/books";
-console.log(rootURLbooks);
+//var rootURLbooks = rootURL1 + "/books";
+//console.log(rootURLbooks);
 //var rootURLspeech = rootURL1 + '/text_to_speech';
 //console.log(rootURLspeech);
 var token;
@@ -57,9 +57,11 @@ $(document).ready(function(){
 function showBooks(){
 	$('#bookTableRows').empty();
 	$.ajax({
-			url: rootURLbooks
+			//url: rootURLbooks
+			url: nodejsurl+'/books'
 	}).then(function(data) {
-		$.each( data, function( key, val ) {
+		//$.each( data, function( key, val ) { //with rootURLbooks
+		$.each( JSON.parse(data), function( key, val ) {
 		//do something with data
 			var auth = "No authors found.";
 			if(val.hasOwnProperty('authors')){

@@ -13,9 +13,9 @@ spec:
   selector:
     run: library-server
   sessionAffinity: None
-  type: LoadBalancer
-status:
-  loadBalancer: {}
+  type: NodePort
+#status:
+  #loadBalancer: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -31,7 +31,8 @@ spec:
         run: library-server
     spec:
       containers:
-      - image: library-server:v1
+      - image: registry.eu-de.bluemix.net/feggers/library-server:v1
+        #image: library-server:v1
         name: library-server
         env:
           - name: CLOUDANT_DEVELOPER

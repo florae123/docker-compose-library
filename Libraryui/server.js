@@ -188,19 +188,18 @@ app.listen(process.env.PORT || 8080);
 console.log("Listening on port ", (process.env.PORT || 8080 ));
 
 //kubernetes
-/*if (process.env.LIBRARY_SERVER_SERVICE_HOST!=undefined) {
+if (process.env.LIBRARY_SERVER_SERVICE_HOST!=undefined) {
   var javaHost = process.env.LIBRARY_SERVER_SERVICE_HOST;
   var javaPort = process.env.LIBRARY_SERVER_SERVICE_PORT;
-  //this doesn't work in browser
-  //var libraryURI = javaHost+':'+javaPort+'/library-server-java/api';
-  var libraryURI = 'http://192.168.99.101:30190/library-server-java/api';
+  var libraryURI = 'http://'+javaHost+':'+javaPort+'/library-server-java/api';
+  //var libraryURI = 'http://192.168.99.101:30190/library-server-java/api';
   console.log("The Library URI is: "+libraryURI);
-}*/
+}
 //docker compose
-/*else*/ if (process.env.JAVA_SERVER_1_PORT_9080_TCP_ADDR!=undefined){
+else if (process.env.JAVA_SERVER_1_PORT_9080_TCP_ADDR!=undefined){
   var libraryURI = 'http://'+process.env.JAVA_SERVER_1_PORT_9080_TCP_ADDR+':9080/library-server-java/api';
   console.log("The Library URI is: " + libraryURI);
-} else {
+} else { //cloud foundry
   var libraryURI = (process.env.LIBRARY_URI || 'http://localhost:9080/library-server-java/api');
   console.log("The Library URI is: " + libraryURI);
 }
@@ -333,3 +332,159 @@ app.put('/say', function(req, res) {
 
   });
 });
+
+
+
+
+
+
+//all of the following: eliminates URL for java-server in frontend
+//get books
+app.get('/books', function(req, res) {
+  request({url: libraryURI+'/books'},function(err,response,body){
+     console.log("get books body: "+body);
+     console.log('get books error: '+err)
+     if(!err){
+       res.send(body);
+     }
+     else {
+       res.status(500).send('Something broke!');
+     }
+  });
+});
+
+app.get('/books/:bookuri', function(req, res) {
+  request({url: libraryURI+'/books/'+req.params.bookuri},function(err,response,body){
+     console.log(body);
+     if(!err){
+       res.send(body);
+     }
+     else {
+       res.status(500).send('Something broke!');
+     }
+  });
+});
+
+app.get('/rentals/user/:userCustomerId', function(req, res) {
+  console.log('customerid in req: '+req.params.userCustomerId);
+  thisurl = libraryURI+'/rentals/user/'+req.params.userCustomerId;
+  console.log(thisurl);
+  request({url: thisurl},function(err,response,body){
+     console.log(body);
+     if(!err){
+       res.send(body);
+     }
+     else {
+       res.status(500).send('Something broke!');
+     }
+  });
+});
+
+app.delete('/rentals/:valueID', function(req, res) {
+  console.log('valueID in req: '+req.params.valueID);
+  thisurl = libraryURI+'/rentals/'+req.params.valueID;
+  console.log(thisurl);
+  request(
+    { method: 'DELETE',
+      uri: thisurl,
+    }, function (error, response, body) {
+      if(!error){
+        console.log('rental '+req.params.valueID+' has been deleted')
+        res.send(body);
+      } else {
+        console.log('error: '+ response.statusCode)
+        console.log(body)
+        res.status(500).send('Something broke!');
+      }
+    }
+  )
+});
+
+app.put('/rentals/:valueID', function(req, res) {
+  thisurl = libraryURI+'/rentals/'+req.params.valueID;
+  console.log(thisurl);
+  request({ url: thisurl, method: 'PUT', json: req.body}, function (error, response, body) {
+    if(!error){
+      console.log(body);
+      res.send(body);
+    } else {
+      console.log('error: '+ error);
+      console.log(body);
+      res.status(500).send('Something broke!');
+    }
+  });
+})
+
+app.post('/rentals', function(req, res) {
+  request({ url: libraryURI+'/rentals', method: 'POST', json: req.body}, function (error, response, body) {
+    if(!error){
+      console.log(body);
+      res.send(body);
+    } else {
+      console.log('error: '+ error);
+      console.log(body);
+      res.status(500).send('Something broke!');
+    }
+  });
+})
+
+app.delete('/rentals/user/:userCustomerId', function(req, res) {
+  console.log('customerID in req: '+req.params.userCustomerId);
+  thisurl = libraryURI+'/rentals/user/'+req.params.userCustomerId;
+  console.log(thisurl);
+  request(
+    { method: 'DELETE',
+      uri: thisurl,
+    }, function (error, response, body) {
+      if(!error){
+        console.log('rentals for '+req.params.userCustomerId+' have been deleted')
+        res.send(body);
+      } else {
+        console.log('error: '+ response.statusCode)
+        console.log(body)
+        res.status(500).send('Something broke!');
+      }
+    }
+  )
+});
+
+app.get('/customers/user/:userEmail', function(req, res) {
+  console.log('customer email in req: '+req.params.userEmail);
+  thisurl = libraryURI+'/customers/user/'+req.params.userEmail;
+  console.log(thisurl);
+  request({url: thisurl},function(err,response,body){
+     console.log(body);
+     if(!err){
+       res.send(body);
+     }
+     else {
+       res.status(500).send('Something broke!');
+     }
+  });
+});
+
+app.post('/customers', function(req, res) {
+  request({ url: libraryURI+'/customers', method: 'POST', json: req.body}, function (error, response, body) {
+    if(!error){
+      console.log(body);
+      res.send(body);
+    } else {
+      console.log('error: '+ error);
+      console.log(body);
+      res.status(500).send('Something broke!');
+    }
+  });
+})
+
+app.post('/rentals', function(req, res) {
+  request({ url: libraryURI+'/customers', method: 'POST', json: req.body}, function (error, response, body) {
+    if(!error){
+      console.log(body);
+      res.send(body);
+    } else {
+      console.log('error: '+ error);
+      console.log(body);
+      res.status(500).send('Something broke!');
+    }
+  });
+})
